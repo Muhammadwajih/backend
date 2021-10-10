@@ -1,0 +1,31 @@
+version: '3.7'
+services:
+  backend:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    init: true
+    networks:
+    - mysql_internal
+    ports:
+    - "9090:8080"
+    depends_on:
+    - db
+  db:
+    image: mysql:8.0
+    volumes:
+    - db_data:/var/lib/mysql
+    restart: always
+    networks:
+      mysql_internal:
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: studentdb
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+    ports:
+      - "3306:3306"
+volumes:
+  db_data: {}
+networks:
+  mysql_internal:
